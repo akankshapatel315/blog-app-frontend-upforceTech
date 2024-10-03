@@ -71,14 +71,13 @@ export const addBlog:any = createAsyncThunk<Blog, Blog>('blogs/addBlog', async (
 
 // Async thunk to update a blog
 export const updateBlog:any = createAsyncThunk<Blog, Blog>('blogs/updateBlog', async (blogData) => {
-    const response = await axiosInstance.put(`/updateArticle/${blogData.id}`, blogData);
+    const response = await axiosInstance.patch(`/updateArticle/${blogData.id}`, blogData);
     if (response.status === 200) {
         toast.success('Blog updated successfully!'); // Show success toast
     }
     return response.data;
 });
 
-// Async thunk to delete a blog
 export const deleteBlog :any= createAsyncThunk<string, string>('blogs/deleteBlog', async (blogId) => {
     const response = await axiosInstance.delete(`/deleteBlogs/${blogId}`);
     if (response.status === 200) {
@@ -109,8 +108,8 @@ const blogSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message || 'An error occurred';
             })
-            .addCase(addBlog.fulfilled, (state, action: PayloadAction<Blog>) => {
-                state.blogs.push(action.payload);
+            .addCase(addBlog.fulfilled, (state, action: PayloadAction<any>) => {
+                state.blogs.push(action.payload.newBlog);
             })
             .addCase(updateBlog.fulfilled, (state, action: PayloadAction<Blog>) => {
                 const index = state.blogs.findIndex((blog) => blog.id === action.payload.id);

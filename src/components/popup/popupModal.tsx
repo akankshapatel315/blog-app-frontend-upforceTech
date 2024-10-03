@@ -2,20 +2,20 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { addBlog, updateBlog } from '../../features/blog/blogSlice'; // Adjust the import path as needed
+import { addBlog, updateBlog, deleteBlog, fetchBlogs } from '../../features/blog/blogSlice'; // Adjust the import path as needed
 
 interface PopUpModalProps {
-    setOpen: (open: boolean) => void;
+    setOpen: Function;
     selectedBlog?: any;
     modalMode?: 'add' | 'edit' | 'delete' | 'view';
-    onDelete?: Function;
+    onDelete?: (id: string) => void; 
     isAdding?:boolean
 }
 
-const PopUpModal: React.FC<PopUpModalProps> = ({ setOpen, selectedBlog, modalMode, onDelete}:any) => {
+const PopUpModal: React.FC<PopUpModalProps> = ({ setOpen, selectedBlog, modalMode }: any) => {
     const dispatch = useDispatch();
 
-    const formik :any= useFormik({
+    const formik: any = useFormik({
         initialValues: {
             title: selectedBlog?.title || '',
             content: selectedBlog?.content || '',
@@ -29,19 +29,31 @@ const PopUpModal: React.FC<PopUpModalProps> = ({ setOpen, selectedBlog, modalMod
         }),
         onSubmit: async (values) => {
             try {
-                console.log('modalMode :>> ', modalMode);
                 if (modalMode === 'edit') {
-                    await dispatch(updateBlog({ ...values, id: selectedBlog!.id })).unwrap();
+                    await dispatch(updateBlog({ ...values, id: selectedBlog!._id })).unwrap();
                 } else if (modalMode === 'add') {
-                    console.log("add");
                     await dispatch(addBlog(values)).unwrap();
                 }
-                setOpen(false); // Close modal after saving
+                setOpen(false); 
+                dispatch(fetchBlogs());
             } catch (error) {
-                console.error(`Failed to ${modalMode} blog:`, error); // Log error if needed
+                console.error(`Failed to ${modalMode} blog:`, error);
+                setOpen(false); // Close
             }
         },
     });
+
+    const handleDelete = async () => {
+        if (selectedBlog) {
+            try {
+                await dispatch(deleteBlog(selectedBlog._id)).unwrap(); // Dispatch delete action
+                setOpen(false); // Close modal after deletion
+                dispatch(fetchBlogs());
+            } catch (error) {
+                console.error(`Failed to delete blog:`, error);
+            }
+        }
+    };
 
     return (
         <div
@@ -94,7 +106,7 @@ const PopUpModal: React.FC<PopUpModalProps> = ({ setOpen, selectedBlog, modalMod
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={onDelete} // Call the delete function passed as a prop
+                                        onClick={handleDelete} // Dispatch delete action
                                         className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800"
                                     >
                                         Delete

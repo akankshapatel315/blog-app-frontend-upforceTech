@@ -12,9 +12,8 @@ const BlogGrid = () => {
     const [modalMode, setModalMode] = useState<'view' | 'edit' | 'delete'>('view');
 
     useEffect(() => {
-        // Fetch blogs when the component mounts
         dispatch(fetchBlogs());
-    }, [dispatch]);
+    }, [dispatch,isOpen]);
 
     const handleEdit = (blog: any) => {
         setSelectedBlog(blog);
@@ -39,7 +38,6 @@ const BlogGrid = () => {
         setOpen(false);
     };
 
-    console.log('blogs :>> ', blogs);
 
     return (
         <>

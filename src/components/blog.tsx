@@ -1,13 +1,15 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BlogGrid from "./blogGrid"
 import Header from "./header"
 import { RootState } from "../store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PopUpModal from "./popup/popupModal";
+import { fetchBlogs } from "../features/blog/blogSlice";
 
 
 
 const Blog = () => {
+    const dispatch = useDispatch()
     const user = useSelector((state: RootState) => state.user.user);
     const [selectedBlog, setSelectedBlog] = useState<any>(null);
     const [isAdding, setIsAdding] = useState<boolean>(false); // State to determine if adding a blog
@@ -18,6 +20,11 @@ const Blog = () => {
         setIsAdding(true); // Set to add mode
         setOpen(true); // Open modal
     };
+    useEffect(()=>
+    {
+        dispatch(fetchBlogs());
+
+    },[isOpen])
     return (
         <><Header />
             <div className="flex justify-start"> {/* Adjust this container */}
