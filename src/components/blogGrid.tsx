@@ -1,5 +1,6 @@
-import React from 'react'
-
+import { MdModeEdit } from "react-icons/md";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 const BlogGrid = () => {
     return (
         <div>
@@ -8,6 +9,12 @@ const BlogGrid = () => {
                 <div className="flex flex-col justify-between p-4 leading-normal">
                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
+                   
+                <div className="flex justify-end">
+                    <MdModeEdit size={25}color="green" onClick={()=> alert('edit')}/>
+                    <MdDelete  size={25} color="red" onClick={()=> alert('delete')}/>
+                    <MdOutlineRemoveRedEye color="skyblue" size={25} onClick={()=> alert('view')}/>
+                    </div>
                 </div>
             </a>
             <a href="#" className=" mt-2 rtl:mt-0 flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row  hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
