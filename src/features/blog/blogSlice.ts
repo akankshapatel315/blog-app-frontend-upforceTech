@@ -25,25 +25,21 @@ const axiosInstance = axios.create({
 // Request interceptor to add the Bearer token
 axiosInstance.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('accessToken'); // Fallback to local storage if Redux is not used
-        // If you're using Redux to store the token, you can fetch it here
-        console.log('token :>> ', token);
+        const token = localStorage.getItem('token');
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`;
         }
         return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle 403 errors
+// Response interceptor to handle errors
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error: AxiosError) => {
         if (error.response && error.response.status === 403) {
-            toast.error('Access token is required'); // Show error toast
+            toast.error('Access token is required');
         }
         return Promise.reject(error);
     }
@@ -56,33 +52,23 @@ export const fetchBlogs:any = createAsyncThunk<Blog[]>('blogs/fetchBlogs', async
 });
 
 // Async thunk to add a blog
-export const addBlog:any = createAsyncThunk<Blog, Blog>('blogs/addBlog', async (blogData) => {
-    try {
-        const response = await axiosInstance.post('/addArticle', blogData);
-        if (response.status === 200) {
-            toast.success('Blog added successfully!'); // Show success toast
-        }
-        return response.data;
-    } catch (error: any) {
-        toast.error(`Error adding blog: ${error.response?.data?.message || error.message}`);
-        throw error; // Rethrow the error to be handled in extraReducers
-    }
-});
-
-// Async thunk to update a blog
-export const updateBlog:any = createAsyncThunk<Blog, Blog>('blogs/updateBlog', async (blogData) => {
-    const response = await axiosInstance.patch(`/updateArticle/${blogData.id}`, blogData);
-    if (response.status === 200) {
-        toast.success('Blog updated successfully!'); // Show success toast
-    }
+export const addBlog:any  = createAsyncThunk<Blog, Blog>('blogs/addBlog', async (blogData) => {
+    const response = await axiosInstance.post('/addArticle', blogData);
+    toast.success('Blog added successfully!');
     return response.data;
 });
 
-export const deleteBlog :any= createAsyncThunk<string, string>('blogs/deleteBlog', async (blogId) => {
-    const response = await axiosInstance.delete(`/deleteBlogs/${blogId}`);
-    if (response.status === 200) {
-        toast.success('Blog deleted successfully!'); // Show success toast
-    }
+// Async thunk to update a blog
+export const updateBlog:any  = createAsyncThunk<Blog, Blog>('blogs/updateBlog', async (blogData) => {
+    const response = await axiosInstance.patch(`/updateArticle/${blogData.id}`, blogData);
+    toast.success('Blog updated successfully!');
+    return response.data;
+});
+
+// Async thunk to delete a blog
+export const deleteBlog:any  = createAsyncThunk<string, string>('blogs/deleteBlog', async (blogId) => {
+    await axiosInstance.delete(`/deleteBlogs/${blogId}`);
+    toast.success('Blog deleted successfully!');
     return blogId;
 });
 
@@ -108,13 +94,13 @@ const blogSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message || 'An error occurred';
             })
-            .addCase(addBlog.fulfilled, (state, action: PayloadAction<any>) => {
-                state.blogs.push(action.payload.newBlog);
+            .addCase(addBlog.fulfilled, (state, action: PayloadAction<Blog>) => {
+                state.blogs.push(action.payload);
             })
             .addCase(updateBlog.fulfilled, (state, action: PayloadAction<Blog>) => {
                 const index = state.blogs.findIndex((blog) => blog.id === action.payload.id);
                 if (index !== -1) {
-                    state.blogs[index] = action.payload; // Update the blog
+                    state.blogs[index] = action.payload;
                 }
             })
             .addCase(deleteBlog.fulfilled, (state, action: PayloadAction<string>) => {

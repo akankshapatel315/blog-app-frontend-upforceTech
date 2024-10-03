@@ -8,8 +8,8 @@ interface PopUpModalProps {
     setOpen: Function;
     selectedBlog?: any;
     modalMode?: 'add' | 'edit' | 'delete' | 'view';
-    onDelete?: (id: string) => void; 
-    isAdding?:boolean
+    onDelete?: (id: string) => void;
+    isAdding?: boolean
 }
 
 const PopUpModal: React.FC<PopUpModalProps> = ({ setOpen, selectedBlog, modalMode }: any) => {
@@ -22,9 +22,11 @@ const PopUpModal: React.FC<PopUpModalProps> = ({ setOpen, selectedBlog, modalMod
         },
         validationSchema: Yup.object({
             title: Yup.string()
+                .min(3, 'Must be 3 characters or more')
                 .max(100, 'Must be 100 characters or less')
                 .required('Title is required'),
             content: Yup.string()
+                .min(10, 'Must be 10 characters or more')
                 .required('Content is required'),
         }),
         onSubmit: async (values) => {
@@ -34,7 +36,7 @@ const PopUpModal: React.FC<PopUpModalProps> = ({ setOpen, selectedBlog, modalMod
                 } else if (modalMode === 'add') {
                     await dispatch(addBlog(values)).unwrap();
                 }
-                setOpen(false); 
+                setOpen(false);
                 dispatch(fetchBlogs());
             } catch (error) {
                 console.error(`Failed to ${modalMode} blog:`, error);
@@ -48,11 +50,11 @@ const PopUpModal: React.FC<PopUpModalProps> = ({ setOpen, selectedBlog, modalMod
             try {
                 await dispatch(deleteBlog(selectedBlog._id)).unwrap(); // Dispatch delete action
                 console.log("delete");
-                setOpen(false); 
+                setOpen(false);
                 dispatch(fetchBlogs());
             } catch (error) {
                 console.error(`Failed to delete blog:`, error);
-                setOpen(false); 
+                setOpen(false);
 
             }
         }
