@@ -1,10 +1,12 @@
 // src/app/store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '../src/features/user/userSlice';
+import blogReducer from '../src/features/blog/blogSlice';
 
 const store = configureStore({
   reducer: {
     user: userReducer,
+    blogs: blogReducer,
   },
 });
 

@@ -5,7 +5,7 @@ import PopUpModal from "./popup/popupModal";
 const BlogGrid = () => {
     const [isOpen, setOpen] = useState(false);
     const [selectedBlog, setSelectedBlog] = useState<any>(null);
-    const [modalMode, setModalMode] = useState<'view' | 'edit' | 'delete'>('view');
+    const [modalMode, setModalMode] = useState<'view' | 'edit' | 'delete'>('view'); // Added state for modal mode
 
     const blogData = {
         title: "Noteworthy technology acquisitions 2021",
@@ -14,25 +14,25 @@ const BlogGrid = () => {
 
     const handleEdit = () => {
         setSelectedBlog(blogData);
-        setModalMode('edit');
+        setModalMode('edit'); // Set modal mode to edit
         setOpen(true);
     };
 
     const handleDelete = () => {
         setSelectedBlog(blogData);
-        setModalMode('delete');
+        setModalMode('delete'); // Set modal mode to delete
         setOpen(true);
     };
 
     const handleView = () => {
         setSelectedBlog(blogData);
-        setModalMode('view');
+        setModalMode('view'); // Set modal mode to view
         setOpen(true);
     };
 
-    const onDelete = () => {
+    const onDelete = (id: string) => {
         // Implement your delete logic here, e.g., call an API to delete the blog post
-        console.log("Deleting blog:", selectedBlog);
+        console.log("Deleting blog with id:", id);
         setOpen(false); // Close modal after delete
     };
 
@@ -55,8 +55,8 @@ const BlogGrid = () => {
                 <PopUpModal 
                     setOpen={setOpen} 
                     selectedBlog={selectedBlog} 
-                    modalMode={modalMode} 
-                    onDelete={onDelete} 
+                    modalMode={modalMode} // Pass the modal mode
+                    onDelete={onDelete} // Pass delete function
                 />
             )}
         </>

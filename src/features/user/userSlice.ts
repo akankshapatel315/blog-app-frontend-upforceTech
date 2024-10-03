@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const SERVER_URL = 'http://localhost:3000';
+export const SERVER_URL = 'http://localhost:3000';
 
 export interface User {
   id: string;

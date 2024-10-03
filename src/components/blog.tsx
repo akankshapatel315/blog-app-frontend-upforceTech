@@ -10,7 +10,7 @@ import PopUpModal from "./popup/popupModal";
 const Blog = () => {
     const user = useSelector((state: RootState) => state.user.user);
     const [selectedBlog, setSelectedBlog] = useState<any>(null);
-    const [isAdding, setIsAdding] = useState(false); // State to determine if adding a blog
+    const [isAdding, setIsAdding] = useState<boolean>(false); // State to determine if adding a blog
     const [isOpen, setOpen] = useState(false);
 
     const handleAddBlog = () => {
@@ -30,7 +30,7 @@ const Blog = () => {
             </div>
 
             <BlogGrid />
-               {isOpen && <PopUpModal setOpen={setOpen} selectedBlog={selectedBlog} isAdding={isAdding} />} 
+               {isOpen && <PopUpModal setOpen={setOpen} selectedBlog={selectedBlog} isAdding={isAdding}   />} 
             </>
     )
 }
