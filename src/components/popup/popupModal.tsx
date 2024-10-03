@@ -29,9 +29,11 @@ const PopUpModal: React.FC<PopUpModalProps> = ({ setOpen, selectedBlog, modalMod
         }),
         onSubmit: async (values) => {
             try {
+                console.log('modalMode :>> ', modalMode);
                 if (modalMode === 'edit') {
                     await dispatch(updateBlog({ ...values, id: selectedBlog!.id })).unwrap();
                 } else if (modalMode === 'add') {
+                    console.log("add");
                     await dispatch(addBlog(values)).unwrap();
                 }
                 setOpen(false); // Close modal after saving

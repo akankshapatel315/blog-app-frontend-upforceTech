@@ -30,7 +30,7 @@ const Blog = () => {
             </div>
 
             <BlogGrid />
-               {isOpen && <PopUpModal setOpen={setOpen} selectedBlog={selectedBlog} isAdding={isAdding}   />} 
+               {isOpen && <PopUpModal setOpen={setOpen} selectedBlog={selectedBlog} isAdding={isAdding} modalMode={"add"}  />} 
             </>
     )
 }

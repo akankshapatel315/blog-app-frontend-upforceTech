@@ -23,7 +23,7 @@ const Login = () => {
   });
 
   const handleSubmit = async (values: SignInFormValues) => {
-    await dispatch(loginUser({ email:values.email, password:values.password }));
+    await dispatch(loginUser({ email:values.email, password:values.password, }));
     navigate('/blog')
   };
   return (
