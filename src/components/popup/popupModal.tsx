@@ -47,10 +47,13 @@ const PopUpModal: React.FC<PopUpModalProps> = ({ setOpen, selectedBlog, modalMod
         if (selectedBlog) {
             try {
                 await dispatch(deleteBlog(selectedBlog._id)).unwrap(); // Dispatch delete action
-                setOpen(false); // Close modal after deletion
+                console.log("delete");
+                setOpen(false); 
                 dispatch(fetchBlogs());
             } catch (error) {
                 console.error(`Failed to delete blog:`, error);
+                setOpen(false); 
+
             }
         }
     };
