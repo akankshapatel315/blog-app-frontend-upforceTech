@@ -10,7 +10,7 @@ interface SignInFormValues {
   password: string;
 }
 const Login = () => {
-  const navigate= useNavigate()
+  // const navigate= useNavigate()
   const dispatch: AppDispatch = useDispatch();
     const initialValues: SignInFormValues = { email: '', password: '' };
   const validationSchema = Yup.object({
@@ -24,7 +24,7 @@ const Login = () => {
 
   const handleSubmit = async (values: SignInFormValues) => {
     await dispatch(loginUser({ email:values.email, password:values.password, }));
-    navigate('/blog')
+    // navigate('/blog')
   };
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
