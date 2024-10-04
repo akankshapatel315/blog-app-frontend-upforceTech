@@ -50,7 +50,7 @@ const userSlice = createSlice({
         navigate('/blog')
 
       })
-      .addCase(loginUser.rejected, (state, action) => {
+      .addCase(loginUser.rejected, (state) => {
         state.loading = false;
         state.error = 'Failed to log in';
         toast.error(state.error); // Show error toast
